@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Word-to-PDF</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    line-height: 1.4;
+}
+.main-wrapper img{
+    width: 100%;
+    display: block;
+}
+.main-wrapper a{
+    color: #000;
+    text-decoration: none;
+}
+.main-wrapper ul li{
+    list-style-type: none;
+}
+.navbar{
+  background:linear-gradient(65deg, rgba(125, 172, 255, 0.864),rgb(142, 221, 255),rgb(255, 255, 255),rgb(142, 221, 255), rgba(125, 172, 255, 0.864));
+    padding: 0 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+.brand-and-icon{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ffffff;
+}
+.navbar-brand{
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    font-weight: 700;
+}
+.navbar-toggler{
+    display: block;
+    border: none;
+    background: transparent;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    transition: all 0.4s ease;
+    border: 2px solid #000;
+    border-radius: 4px;
+}
+.navbar-toggler:hover{
+    opacity: 0.7;
+}
+.navbar-collapse{
+    overflow-y: scroll;
+    display: none;
+}
+.navbar-nav > li > a{
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: block;
+    padding: 0.3rem 0;
+    margin: 0.2rem 0;
+    border-bottom: 1px solid #dddddd4d;
+    border-radius: 1px;
+    position: relative;
+    transition: all 0.4s ease;
+    border-radius: 15px;
+}
+.drop-icon{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.navbar-nav > li > a:hover{
+    opacity: 0.7;
+    background:linear-gradient(65deg, rgba(158, 243, 249, 0.674),white,rgba(255, 255, 255, 0.356), rgba(133, 255, 231, 0.707));
+ border-radius: 10px;
+ margin: 0.1rem 0;
+
+}
+.sub-menu h4{
+    text-transform: capitalize;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+}
+.sub-menu ul li{
+    text-transform: capitalize;
+    padding: 0.5rem 0;
+    margin: 0.4rem 0;
+    font-size: 0.95rem;
+}
+.sub-menu ul li a{
+    opacity: 0.8;
+    transition: all 0.5s ease;
+    border-radius: 6%;
+
+}
+.sub-menu ul li a:hover{
+    padding-left: 14px;
+    opacity: 0.9;
+    color:#f82900f7;
+}
+.sub-menu{
+    display: none;
+}
+
+.sub-menu-item{
+    padding-left: 1.2rem;
+}
+.sub-menu-item:nth-child(3){
+    background: #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.sub-menu-item:nth-child(3) h2{
+    text-transform: capitalize;
+    margin: 1.5rem 0;
+}
+.sub-menu-item:nth-child(3) .btn{
+    border: 1px solid #000;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    transition: all 0.5s ease;
+}
+.sub-menu-item:nth-child(3) .btn:hover{
+    background: transparent;
+    color: #000;
+}
+.sub-menu-item:nth-child(4){
+    width: 50%;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* header */
+.header{
+   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(img/banner.jpg) center/cover no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.header h2{
+    margin: 1rem;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+}
+.header p{
+    margin: 0.5rem auto;
+    color: #fff;
+    width: 60%;
+    opacity: 0.8;
+    font-weight: 300;
+    font-size: 1.2rem;
+    text-align: center;
+}
+.header button{
+  
+    margin: 5rem;
+    font-size: 1rem;
+    width: 10%;
+    text-transform: uppercase;
+    background:linear-gradient(65deg, rgba(246, 120, 255, 0.878),rgba(133, 255, 231, 0.81));
+    color: #ffffff;
+    border: none;
+    padding: 1.3rem 1.2rem;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    border-radius: 15px;
+   
+
+}
+.header button:hover{
+    background:linear-gradient(65deg, rgba(133, 255, 231, 0.81),rgba(246, 120, 255, 0.878));
+    color: #000;
+       opacity: 10px;
+    transform: scale(1.2);
+}
+
+/* Media Queries */
+@media screen and (min-width: 992px){
+    .navbar{
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 0 5rem;
+        position: relative;
+    }
+    .navbar-toggler{
+        display: none;
+    }
+    .brand-and-icon{
+        flex: 0 0 100px;
+        border-bottom: none;
+        padding: 0;
+    }
+    .navbar-collapse{
+        display: block!important;
+        overflow-y: hidden;
+        flex: 1 0 auto;
+    }
+    .navbar-nav{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .navbar-nav > li > a{
+        border-bottom: none;
+        margin: 0 0.4rem;
+        padding: 1.7rem 1.8rem 1.7rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    .sub-menu{
+        position: absolute;
+        left: 20%;
+        right:30%;
+        width:60%;
+        height:65%
+        background: #f8f8f8;
+       
+
+    }
+    .sub-menu:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      transform: scale(1.03);
+    }
+    #sub-menu1{
+        position: absolute;
+        left: 10%;
+        right:50%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu1:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      color:#141896;
+      transform: scale(1.03);
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+
+    #sub-menu2{
+        position: absolute;
+        left: 23;
+        right:30%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu2:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      color:#141896;
+      transform: scale(1.03);
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+    #sub-menu3{
+        position: absolute;
+        left: 53%;
+        right:30%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu3:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      color:#141896;
+      transform: scale(1.03);
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+    #sub-menu4{
+        position: absolute;
+        left: 67%;
+        right:30%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu4:hover{
+      box-shadow: 0px 10px 15px rgba(38, 146, 170, 0.988);
+      color:#141896;
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+    .navbar-nav > li:hover .sub-menu{
+        display: grid!important;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 0 5rem;
+    }
+    .navbar-nav > li{
+        border-bottom: 2px solid transparent;
+        transition: border-bottom 0.4s ease;
+    }
+    .navbar-nav > li:hover{
+        border-bottom-color: #2b2b2b;
+    }
+    .sub-menu-item{
+        padding-left: 0;
+    }
+    .sub-menu-item:nth-child(3){
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    /* header */
+    .header{
+        height: calc(100vh - 75px);
+    }
+    .header h2{
+        font-size: 4rem;
+    }
+    .header p{
+        
+        width: 85%;
+    }
+
+.counter {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ddd
+        }
+    }
+    /* Default styles for login icon */
+    .float{
+	position:fixed;
+    width:55px;
+    height:55px;
+    bottom:30px;
+    right:30px;
+    background:linear-gradient(65deg, rgba(227, 85, 249, 0.889),rgba(41, 100, 251, 0.878));
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    font-size:30px;
+    z-index:100;
+    animation: jump 3s infinite, blue 3s infinite, wave 10s linear infinite;
+    overflow: hidden;
+}
+
+.my-float{
+	margin-top:16px;
+}
+.float:hover{
+    box-shadow: 4px 10px 15px rgba(33, 94, 226, 0.988);
+    transform: scale(1.03);
+}
+
+@keyframes jump {
+    0%, 10%, 20%, 30%, 50% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.bh-icon {
+  /* Add your styles here */
+  font-weight: bold;
+  font-size: 21px; 
+  color:#6cfff5;
+
+}
+  /* floating icon module completed */
+
+</style>
+<body>
+    <div class = "main-wrapper">
+        <nav class = "navbar">
+          <div class = "brand-and-icon">
+            <a href = "index.php" class = "navbar-brand">BOTHUB</a>
+            <button type = "button" class = "navbar-toggler">
+              <i class = "fas fa-bars"></i>
+            </button>
+          </div>
+  
+          <div class = "navbar-collapse">
+            <ul class = "navbar-nav">
+              <li>
+                <a href = "chatbot.html">Chatbot</a>
+              </li>
+              <li>
+                <a href = "https://bothuubs.streamlit.app/">chatpdf</a>
+              </li>
+              <li>
+                <a href = "#" class = "menu-link">
+                  Convert-to-PDF
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu1">
+                    <h4>Others to PDF</h4>
+  
+                    <ul>
+                      <li><a href = "JPGtoPDF.HTML">JPG-TO-PDF</a></li>
+                      <li><a href = "wordtoPDF.HTML">WORD-TO-PDF</a></li>
+                      <li><a href = "PPTtoPDF.html">PPT-TO-PDF</a></li>
+                      <li><a href = "exceltopdf.html">EXCEL-TO-PDF</a></li>
+                      <li><a href = "htmltopdf.html">HTML-TO-PDF</a></li>
+                    </ul>
+                  </div>
+                  </div>
+                 
+              </li>
+  
+              <li>
+                <a href = "#" class = "menu-link">
+                  Convert-to-others
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu2">
+                    <h4>PDF to others</h4>
+                    <ul>
+                      <li>
+                      <a href = "PDFtoJPG.HTML">PDF-TO-JPG</a>
+                  </li>
+                      <li><a href = "PDFtoword.html">PDF-TO-WORD</a></li>
+                      <li><a href = "pdftoppt.html">PDF-TO-PPT</a></li>
+                      <li><a href = "pdftoexcel.html">PDF-TO-EXCEL</a></li>
+                      <li><a href = "pdftopdfa.html">PDF-TO-PDF/A</a></li>
+                    </ul>
+                  </div>
+                  </div>
+                  <!-- end of item -->
+                  <!-- item -->
+                  
+              </li>
+  
+              <li>
+                <a href = "#" class = "menu-link">
+                 PDF ORGANIZE
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu3">
+                    <h4>Organizing PDF</h4>
+                    <ul>
+                      <li><a href = "merge.html">MERGE PDF</a></li>
+                      <li><a href = "split.html">SPLIT PDF</a></li>
+                      <li><a href = "removepages.html">REMOVE PAGES</a></li>
+                      <li><a href = "extract.html">EXTRACT PAGES</a></li>
+                      <li><a href = "organize.html">ORGANIZE PDF</a></li>
+                    </ul>
+                  </div>
+                  </div>
+                  <!-- end of item -->
+                  <!-- item -->
+              </li>
+  
+              <li>
+                <a href = "#" class = "menu-link">
+                  EDIT PDF
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu4">
+                    <h4> Edit Options</h4>
+                    <ul>
+                      <li><a href = "rotate.html">ROTATE PDF</a></li>
+                      <li><a href = "addpage.html">ADD PAGE NUMBER</a></li>
+                      <li><a href = "sign.html">SIGN IN PDG</a></li>
+                    <!--  <li><a href = "#">fishing</a></li>
+                      <li><a href = "#">fitness & yoga</a></li>-->
+                    </ul>
+                  </div>
+                  </div>
+                  <!-- end of item -->
+                  <!-- item -->
+              </li>
+  
+              <li>
+                <a href = "#">deals</a>
+              </li>
+              
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <h1>PDF to Word Converter</h1>
+      <link rel="stylesheet" >
+      <a href="chatbot.html" class="float" target="_blank">
+      <i class="fa fa-comments chatgpt-icon"></i>
+      </a>
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Save Text As File JavaScript | CodingNepal</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
+    <style>
+       *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body{
+    background:linear-gradient(65deg, rgba(159, 223, 243, 0.842), rgba(255, 255, 255, 0.707),  rgba(242, 173, 173, 0.799));
+    background-repeat: no-repeat;
+    transition: background 0.3s ease-in-out;
+}
+.main-wrapper img{
+    width: 100%;
+    display: block;
+}
+.main-wrapper a{
+    color: #000;
+    text-decoration: none;
+}
+.main-wrapper ul li{
+    list-style-type: none;
+}
+.navbar{
+  background:linear-gradient(65deg, rgba(125, 172, 255, 0.864),rgb(142, 221, 255),rgb(255, 255, 255),rgb(142, 221, 255), rgba(125, 172, 255, 0.864));
+    padding: 0 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+.brand-and-icon{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ffffff;
+}
+.navbar-brand{
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    font-weight: 700;
+}
+.navbar-toggler{
+    display: block;
+    border: none;
+    background: transparent;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    transition: all 0.4s ease;
+    border: 2px solid #000;
+    border-radius: 4px;
+}
+.navbar-toggler:hover{
+    opacity: 0.7;
+}
+.navbar-collapse{
+    overflow-y: scroll;
+    display: none;
+}
+.navbar-nav > li > a{
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: block;
+    padding: 0.3rem 0;
+    margin: 0.2rem 0;
+    border-bottom: 1px solid #dddddd4d;
+    border-radius: 1px;
+    position: relative;
+    transition: all 0.4s ease;
+    border-radius: 15px;
+}
+.drop-icon{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.navbar-nav > li > a:hover{
+    opacity: 0.7;
+    background:linear-gradient(65deg, rgba(158, 243, 249, 0.674),white,rgba(255, 255, 255, 0.356), rgba(133, 255, 231, 0.707));
+ border-radius: 10px;
+ margin: 0.1rem 0;
+
+}
+.sub-menu h4{
+    text-transform: capitalize;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+}
+.sub-menu ul li{
+    text-transform: capitalize;
+    padding: 0.5rem 0;
+    margin: 0.4rem 0;
+    font-size: 0.95rem;
+}
+.sub-menu ul li a{
+    opacity: 0.8;
+    transition: all 0.5s ease;
+    border-radius: 6%;
+
+}
+.sub-menu ul li a:hover{
+    padding-left: 14px;
+    opacity: 0.9;
+    color:#f82900f7;
+}
+.sub-menu{
+    display: none;
+}
+
+.sub-menu-item{
+    padding-left: 1.2rem;
+}
+.sub-menu-item:nth-child(3){
+    background: #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.sub-menu-item:nth-child(3) h2{
+    text-transform: capitalize;
+    margin: 1.5rem 0;
+}
+.sub-menu-item:nth-child(3) .btn{
+    border: 1px solid #000;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    transition: all 0.5s ease;
+}
+.sub-menu-item:nth-child(3) .btn:hover{
+    background: transparent;
+    color: #000;
+}
+.sub-menu-item:nth-child(4){
+    width: 50%;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* header */
+.header{
+   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(img/banner.jpg) center/cover no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.header h2{
+    margin: 1rem;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+}
+.header p{
+    margin: 0.5rem auto;
+    color: #fff;
+    width: 60%;
+    opacity: 0.8;
+    font-weight: 300;
+    font-size: 1.2rem;
+    text-align: center;
+}
+.header button{
+  
+    margin: 5rem;
+    font-size: 1rem;
+    width: 10%;
+    text-transform: uppercase;
+    background:linear-gradient(65deg, rgba(246, 120, 255, 0.878),rgba(133, 255, 231, 0.81));
+    color: #ffffff;
+    border: none;
+    padding: 1.3rem 1.2rem;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    border-radius: 15px;
+   
+
+}
+.header button:hover{
+    background:linear-gradient(65deg, rgba(133, 255, 231, 0.81),rgba(246, 120, 255, 0.878));
+    color: #000;
+       opacity: 10px;
+    transform: scale(1.2);
+}
+
+/* Media Queries */
+@media screen and (min-width: 992px){
+    .navbar{
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 0 5rem;
+        position: relative;
+    }
+    .navbar-toggler{
+        display: none;
+    }
+    .brand-and-icon{
+        flex: 0 0 100px;
+        border-bottom: none;
+        padding: 0;
+    }
+    .navbar-collapse{
+        display: block!important;
+        overflow-y: hidden;
+        flex: 1 0 auto;
+    }
+    .navbar-nav{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .navbar-nav > li > a{
+        border-bottom: none;
+        margin: 0 0.4rem;
+        padding: 1.7rem 1.8rem 1.7rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    .sub-menu{
+        position: absolute;
+        left: 20%;
+        right:30%;
+        width:60%;
+        height:65%
+        background: #f8f8f8;
+       
+
+    }
+    .sub-menu:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      transform: scale(1.03);
+    }
+    #sub-menu1{
+        position: absolute;
+        left: 10%;
+        right:50%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu1:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      color:#141896;
+      transform: scale(1.03);
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+
+    #sub-menu2{
+        position: absolute;
+        left: 23;
+        right:30%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu2:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      color:#141896;
+      transform: scale(1.03);
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+    #sub-menu3{
+        position: absolute;
+        left: 53%;
+        right:30%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu3:hover{
+      box-shadow: 0px 10px 15px rgba(88, 220, 244, 0.988);
+      color:#141896;
+      transform: scale(1.03);
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+    #sub-menu4{
+        position: absolute;
+        left: 67%;
+        right:30%;
+        width: 35%;
+        top: 100%;
+        background: #f8f8f8;
+        padding-left: 30px;
+        border-radius: 15px;
+    }
+    #sub-menu4:hover{
+      box-shadow: 0px 10px 15px rgba(38, 146, 170, 0.988);
+      color:#141896;
+      background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
+
+    }
+    .navbar-nav > li:hover .sub-menu{
+        display: grid!important;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 0 5rem;
+    }
+    .navbar-nav > li{
+        border-bottom: 2px solid transparent;
+        transition: border-bottom 0.4s ease;
+    }
+    .navbar-nav > li:hover{
+        border-bottom-color: #2b2b2b;
+    }
+    .sub-menu-item{
+        padding-left: 0;
+    }
+    .sub-menu-item:nth-child(3){
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    /* header */
+    .header{
+        height: calc(100vh - 75px);
+    }
+    .header h2{
+        font-size: 4rem;
+    }
+    .header p{
+        
+        width: 85%;
+    }
+
+.counter {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ddd
+        }
+    }
+        /* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+
+.wrapper {
+  align-items: center;
+  width: 443px;
+  background:linear-gradient(65deg,rgba(157, 213, 229, 0.605), rgba(123, 204, 255, 0.918));
+  padding: 30px 25px 40px;
+  border-radius: 18px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+  margin: auto; /* Center the container */
+  margin-top: 80px; /* Adjust this value based on your nav bar height */
+}
+.wrapper :where(textarea, input, select, button){
+  width: 100%;
+  outline: none;
+  border: none;
+  font-size: 17px;
+  border-radius: 5px;
+}
+.wrapper :where(textarea, input)::placeholder{
+  color: #aaa;
+}
+.wrapper :where(textarea, input):focus{
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.08);
+}
+.wrapper textarea{
+  height: 270px;
+  resize: none;
+  padding: 8px 13px;
+  font-size: 17.6px;
+  border: 1px solid #ccc;
+  background-color: rgba(246, 253, 255, 0.816);
+  border-radius: 18px;
+
+}
+.wrapper .file-options{
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+.file-options .option{
+  width: calc(100% / 2 - 8px);
+}
+.option label{
+  font-size: 17px;
+}
+.option :where(input, .select-menu){
+  height: 50px;
+  padding: 0 13px;
+  margin-top: 6px;
+  border-radius: 5px;
+  border: 1px solid #65a7e3;
+  border-radius: 12px;
+
+}
+.option .select-menu select{
+  height: 50px;
+  background: none;
+
+}
+.wrapper .save-btn{
+  color: #fff;
+  width: 250px;
+  margin-left:75px ;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 16px 0;
+  margin-top: 20px;
+  pointer-events: none;
+  border-radius: 13px;
+  background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);  transition: ease-out 0.9s;
+}
+.save-btn:hover{
+    box-shadow: inset 0 -100px 0 0 rgb(124, 95, 255) ;
+    transform: scale(1.03);
+
+}
+textarea:valid ~ .save-btn{
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.9s ease;
+}
+
+@media screen and (max-width: 475px) {
+  .wrapper {
+    padding: 25px 18px 30px;
+  }
+  .wrapper :where(textarea, input, select, button, label) {
+    font-size: 16px !important;
+  }
+  .file-options .option {
+    width: calc(50% - 5px);
+  }
+  .option :where(input, .select-menu) {
+    padding: 0 10px;
+  }
+  .wrapper .save-btn {
+    padding: 15px 0;
+  }
+}
+.float{
+	position:fixed;
+    width:55px;
+    height:55px;
+    bottom:30px;
+    right:30px;
+    background:linear-gradient(65deg, rgba(227, 85, 249, 0.889),rgba(41, 100, 251, 0.878));
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    font-size:30px;
+    z-index:100;
+    animation: jump 3s infinite, blue 3s infinite, wave 10s linear infinite;
+    overflow: hidden;
+}
+
+.my-float{
+	margin-top:16px;
+}
+.float:hover{
+    box-shadow: 4px 10px 15px rgba(33, 94, 226, 0.988);
+    transform: scale(1.03);
+}
+
+@keyframes jump {
+    0%, 10%, 20%, 30%, 50% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.bh-icon {
+  /* Add your styles here */
+  font-weight: bold;
+  font-size: 21px; 
+  color:#6cfff5;
+
+}
+  /* floating icon module completed */
+
+    </style>
+  </head>
+  <body>
+    <div class = "main-wrapper">
+        <nav class = "navbar">
+          <div class = "brand-and-icon">
+            <a href = "index.php" class = "navbar-brand">BOTHUB</a>
+            <button type = "button" class = "navbar-toggler">
+              <i class = "fas fa-bars"></i>
+            </button>
+          </div>
+  
+          <div class = "navbar-collapse">
+            <ul class = "navbar-nav">
+              <li>
+                <a href = "chatbot.html">Chatbot</a>
+              </li>
+              <li>
+                <a href = "https://bothuubs.streamlit.app/">chatpdf</a>
+              </li>
+              <li>
+                <a href = "#" class = "menu-link">
+                  Convert-to-PDF
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu1">
+                    <h4>Others to PDF</h4>
+  
+                    <ul>
+                      <li><a href = "JPGtoPDF.HTML">JPG-TO-PDF</a></li>
+                      <li><a href = "wordtoPDF.HTML">WORD-TO-PDF</a></li>
+                      <li><a href = "PPTtoPDF.html">PPT-TO-PDF</a></li>
+                      <li><a href = "exceltopdf.html">EXCEL-TO-PDF</a></li>
+                      <li><a href = "htmltopdf.html">HTML-TO-PDF</a></li>
+                    </ul>
+                  </div>
+                  </div>
+                 
+              </li>
+  
+              <li>
+                <a href = "#" class = "menu-link">
+                  Convert-to-others
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu2">
+                    <h4>PDF to others</h4>
+                    <ul>
+                      <li>
+                      <a href = "PDFtoJPG.HTML">PDF-TO-JPG</a>
+                  </li>
+                      <li><a href = "PDFtoword.html">PDF-TO-WORD</a></li>
+                      <li><a href = "pdftoppt.html">PDF-TO-PPT</a></li>
+                      <li><a href = "pdftoexcel.html">PDF-TO-EXCEL</a></li>
+                      <li><a href = "pdftopdfa.html">PDF-TO-PDF/A</a></li>
+                    </ul>
+                  </div>
+                  </div>
+                  <!-- end of item -->
+                  <!-- item -->
+                  
+              </li>
+  
+              <li>
+                <a href = "#" class = "menu-link">
+                 PDF ORGANIZE
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu3">
+                    <h4>Organizing PDF</h4>
+                    <ul>
+                      <li><a href = "merge.html">MERGE PDF</a></li>
+                      <li><a href = "split.html">SPLIT PDF</a></li>
+                      <li><a href = "removepages.html">REMOVE PAGES</a></li>
+                      <li><a href = "extract.html">EXTRACT PAGES</a></li>
+                      <li><a href = "organize.html">ORGANIZE PDF</a></li>
+                    </ul>
+                  </div>
+                  </div>
+                  <!-- end of item -->
+                  <!-- item -->
+              </li>
+  
+              <li>
+                <a href = "#" class = "menu-link">
+                  EDIT PDF
+                  <span class = "drop-icon">
+                    <i class = "fas fa-chevron-down"></i>
+                  </span>
+                </a>
+                <div class = "sub-menu">
+                  <!-- item -->
+                  <div class = "sub-menu-item">
+                    <div id="sub-menu4">
+                    <h4> Edit Options</h4>
+                    <ul>
+                      <li><a href = "rotate.html">ROTATE PDF</a></li>
+                      <li><a href = "addpage.html">ADD PAGE NUMBER</a></li>
+                      <li><a href = "sign.html">SIGN IN PDG</a></li>
+                    <!--  <li><a href = "#">fishing</a></li>
+                      <li><a href = "#">fitness & yoga</a></li>-->
+                    </ul>
+                  </div>
+                  </div>
+                  <!-- end of item -->
+                  <!-- item -->
+              </li>
+  
+              <li>
+                <a href = "#">deals</a>
+              </li>
+              
+            </ul>
+          </div>
+        </nav>
+      </div>
+    <div class="wrapper">
+      <textarea spellcheck="false" placeholder="Enter something to save" required>Welcome to BotHub! use this to make your document from text...</textarea>
+      <div class="file-options">
+        <div class="option file-name">
+          <label>File name</label>
+          <input type="text" spellcheck="false" placeholder="Enter file name" required>
+        </div>
+        <div class="option save-as">
+          <label>Save as</label>
+          <div class="select-menu">
+            <select>
+              <option value="text/plain">Text File (.txt)</option>
+              <option value="text/javascript">JS File (.js)</option>
+              <option value="text/html">HTML File (.html)</option>
+              <option value="image/svg+xml">SVG File (.svg)</option>
+              <option value="application/msword">Doc File (.doc)</option>
+              <option value="application/vnd.ms-powerpoint">PPT File (.ppt)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="save-btn" type="button">Save As Text File</button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <link rel="stylesheet" >
+    <a href="chatbot.html" class="float" target="_blank">
+    <i class="fa fa-comments chatgpt-icon"></i>
+    </a>
+    <script>
+        const textarea = document.querySelector("textarea"),
+fileNameInput = document.querySelector(".file-name input"),
+selectMenu = document.querySelector(".save-as select"),
+saveBtn = document.querySelector(".save-btn");
+
+selectMenu.addEventListener("change", () => {
+    const selectedFormat = selectMenu.options[selectMenu.selectedIndex].text;
+    saveBtn.innerText = `Save As ${selectedFormat.split(" ")[0]} File`;
+});
+
+saveBtn.addEventListener("click", () => {
+    const blob = new Blob([textarea.value], {type: selectMenu.value});
+    const fileUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = fileNameInput.value;
+    link.href = fileUrl;
+    link.click();
+});
+    </script>
+  </body>
+</html>

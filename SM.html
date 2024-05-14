@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Poppins', sans-serif; /* Use Poppins font with fallback to sans-serif */
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 20px;
+    }
+
+    .grid-item {
+      border: 1px solid #ccc;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      border-radius: 18px;
+      width: 500px;
+    }
+
+    img {
+      max-width: 10%;
+      height: auto;
+      margin-right: 20px; /* Add margin to separate the logo from text */
+    }
+
+    .icon {
+      font-size: 48px; /* Adjust icon size as needed */
+    }
+
+    .align {
+      text-align: justify;
+      font-size: 16px; /* Set the font size for the paragraph */
+      line-height: 1.5; /* Set the line height for better readability */
+    }
+
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div id="abou">
+  <div class="grid-container">
+    <div class="grid-item">
+      <img src="img/image1.png" alt="Logo">
+      <p class="align">BotHub is your universal app for document conversions. We support nearly all document formats, including Word, PDF, Excel, PowerPoint, and more. With our AI-powered chatbot, you can generate content based on your queries and convert it into any document format you choose. Plus, you can use our online tool without downloading any software.</p>
+    </div>
+    <div class="grid-item">
+      <img src="img/image2.png" alt="Logo">
+      <p class="align">BotHub prioritizes your data security. We follow ISO 27001 standards and have been trusted by our users and customers since our inception. Your files are safe with us; no one except you will ever have access to them. We monetize by selling access to our API, not by selling your data. Learn more about our commitment to security in our Security Overview.</p>
+    </div>
+    <div class="grid-item">
+      <img src="img/image3.png" alt="Logo">
+      <p class="align">BotHub ensures high-quality conversions for your documents. Our advanced algorithms guarantee that your files are converted with precision and accuracy, maintaining the integrity of your content. Whether you're converting to PDF, Word, or any other format, you can trust BotHub to deliver the highest quality results.</p>
+    </div>
+    <div class="grid-item">
+      <img src="img/image4.png" alt="Logo">
+      <p class="align">Integrate BotHub's powerful API into your applications to unlock a world of document conversion possibilities. Our API supports over 200 document formats, allowing you to seamlessly convert files with ease. With BotHub API, you can deliver high-quality document conversions directly within your app, enhancing its functionality and user experience.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
