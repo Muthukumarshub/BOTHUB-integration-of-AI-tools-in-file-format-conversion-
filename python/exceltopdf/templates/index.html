@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Word-to-PDF</title>
+    <title>File Converter</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
-        *{
+        * {
             box-sizing: border-box;
             padding: 0;
             margin: 0;
             font-family: 'Roboto', sans-serif;
         }
-        body{
+        body {
             background: linear-gradient(65deg,rgb(128, 128, 241),rgb(52, 162, 230));
         }
         .container {
             width: 90%;
             max-width: 400px;
-            height: 600px; 
+            height: 500px;
             background: linear-gradient(45deg, rgba(183, 204, 255, 0.759), rgba(228, 205, 255, 0.627));
             padding: 20px;
             border-radius: 10px;
@@ -104,30 +105,11 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .docx-viewer {
-            width: 100%;
-            height: 600px;
-            border: 1px solid #ccc;
-        }
-        .drop-area {
-            border: 2px dashed #007bff;
-            border-radius: 5px;
-            margin-top: 40px;
-            padding: 60px;
-            text-align: center;
-            color: #007bff;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-            margin-bottom: 20px;    
-        }
-        .drop-area.active {
-            border-color: #007bff;
-        }
         .download-link {
             width: 170px;
             display: inline-block;
-            padding: 14px 20px ;
-            margin: 26px 100px 0px;
+            padding: 14px 20px;
+            margin: 10px 100px 0px; /* Increased top margin */
             border: none;
             border-radius: 4px;
             background: linear-gradient(65deg, rgb(37, 37, 255), rgb(210, 119, 255));
@@ -145,21 +127,36 @@
         .download-link:active {
             transform: scale(1.5);
         }
+        .drop-zone {
+        margin-top: 70px;
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+            padding: 50px;
+            text-align: center;
+            color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-bottom: 20px;
+        }
+        .drop-zone.dragover {
+            background-color: #007bff;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">DOCX to PDF Converter</h1>
-        <div class="drop-area" id="dropArea">
-            <span>Drop DOCX file here or click to upload</span>
-        </div>
+        <h1 class="title">File Converter</h1>
         <form id="uploadForm" action="/convert" method="post" enctype="multipart/form-data">
+            <div class="drop-zone" id="dropZone">
+                Drag & Drop your file here
+            </div>
             <div class="file-input-container">
                 <label for="fileInput" class="file-input-label">Choose File</label>
-                <input type="file" name="file" accept=".docx" class="file-input form-control" id="fileInput">
+                <input type="file" name="file" accept=".pdf,.xlsx" class="file-input form-control" id="fileInput">
             </div>
             <div class="file-name" id="fileName"></div>
-            <button type="submit" class="convert-button">Convert to PDF</button>
+            <button type="submit" class="convert-button">Convert</button>
         </form>
         <div class="loading-message">
             <div class="loading-spinner"></div>
@@ -170,96 +167,66 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         $(document).ready(function() {
-            var dropArea = document.getElementById('dropArea');
-            var fileInput = document.getElementById('fileInput');
-            var fileToUpload = null;
+            $('#uploadForm').on('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $('.loading-message').show();
+                $('#resultContainer').html('');
 
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false)
+                $.ajax({
+                    url: '/convert',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('.loading-message').hide();
+                        if (response.error) {
+                            $('#resultContainer').html('<p style="color: red;">' + response.error + '</p>');
+                        } else {
+                            var downloadLink = '<a class="download-link" href="' + response.download_link + '">Download</a>';
+                            $('#resultContainer').html(downloadLink);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $('.loading-message').hide();
+                        $('#resultContainer').html('<p style="color: red;">Bothub need a Excel file to convert ' + textStatus + '</p>');
+                        alert('Bothub need a file');
+                    }
+                });
             });
 
-            function preventDefaults (e) {
+            $('#fileInput').on('change', function() {
+                var fileName = $(this).val().split('\\').pop();
+                $('#fileName').html(fileName);
+            });
+
+            var dropZone = $('#dropZone');
+
+            dropZone.on('dragover', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false)
+                dropZone.addClass('dragover');
             });
 
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false)
+            dropZone.on('dragleave', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.removeClass('dragover');
             });
 
-            function highlight(e) {
-                dropArea.classList.add('active');
-            }
-
-            function unhighlight(e) {
-                dropArea.classList.remove('active');
-            }
-
-            dropArea.addEventListener('drop', handleDrop, false);
-
-            function handleDrop(e) {
-                var dt = e.dataTransfer;
-                var files = dt.files;
-
-                handleFiles(files);
-            }
-
-            function handleFiles(files) {
+            dropZone.on('drop', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.removeClass('dragover');
+                var files = e.originalEvent.dataTransfer.files;
                 if (files.length > 0) {
-                    fileToUpload = files[0];
-                    fileInput.files = files;
-                    updateFileName(fileToUpload.name);
-                }
-            }
-
-            fileInput.addEventListener('change', function() {
-                fileToUpload = fileInput.files[0];
-                updateFileName(fileToUpload.name);
-            });
-
-            function updateFileName(name) {
-                $('#fileName').text(name);
-            }
-
-            $('#uploadForm').submit(function(event) {
-                event.preventDefault();
-                if (fileToUpload) {
-                    var formData = new FormData();
-                    formData.append('file', fileToUpload);
-                    $('.convert-button').prop('disabled', true);
-                    $('.loading-message').show();
-                    $.ajax({
-                        url: '/convert',
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(data) {
-                            $('.convert-button').prop('disabled', false);
-                            $('.loading-message').hide();
-                            if (data.error) {
-                                alert(data.error);
-                            } else {
-                                $('#resultContainer').html(`
-                                    <a href="${data.download_link}" class="download-link">Download PDF</a>
-                                `);
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            $('.convert-button').prop('disabled', false);
-                            $('.loading-message').hide();
-                            alert('Failed to convert file: ' + textStatus + ' - ' + errorThrown);
-                        }
-                    });
-                } else {
-                    alert('Please select a DOCX file to upload.');
+                    $('#fileInput')[0].files = files;
+                    var fileName = files[0].name;
+                    $('#fileName').html(fileName);
                 }
             });
         });
     </script>
-  </body>
+</body>
 </html>

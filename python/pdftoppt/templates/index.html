@@ -23,7 +23,7 @@
         .container {
             width: 90%;
             max-width: 400px;
-            height: 500px; /* Adjust height as needed */
+            height: 600px; /* Adjust height as needed */
             background: linear-gradient(45deg, rgba(183, 204, 255, 0.759), rgba(228, 205, 255, 0.627));
             padding: 20px;
             border-radius: 10px;
@@ -130,7 +130,8 @@
         .drop-zone {
             border: 2px dashed #007bff;
             border-radius: 5px;
-            padding: 20px;
+            margin-top: 40px;
+            padding: 60px;
             text-align: center;
             color: #007bff;
             cursor: pointer;
@@ -189,7 +190,8 @@
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         $('.loading-message').hide();
-                        $('#resultContainer').html('<p style="color: red;">An error occurred: ' + textStatus + '</p>');
+                        $('#resultContainer').html('<p style="color: red;">Bothub need a pdf file to convert' + textStatus + '</p>');
+                        alert('Bothub need a file');
                     }
                 });
             });
