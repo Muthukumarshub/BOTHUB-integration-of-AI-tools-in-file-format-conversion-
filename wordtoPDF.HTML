@@ -371,81 +371,6 @@ body {
     background-repeat: no-repeat;
     transition: background 0.3s ease-in-out;
 }
-
-.container {
-    max-width: 600px;
-    margin: 200px auto;
-    padding: 40px;
-    background:linear-gradient(65deg, rgba(214, 255, 247, 0.81),rgba(252, 217, 254, 0.878));
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: all 0.3s ease-in-out;
-}
-.container:hover{
-    box-shadow: 0 0 30px rgba(25, 250, 238, 0.951);
-
-}
-.title {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #0e1267;
-    transition: color 0.3s ease-in-out;
-}
-
-.file-input {
-    display: block;
-    margin: 0 auto 20px auto;
-    padding: 10px;
-    border: 2px dashed #f15ed8;
-    border-radius: 5px;
-    width: 80%;
-    max-width: 300px;
-    transition: border-color 0.3s ease-in-out;
-}
-
-.file-input:hover {
-    border-color: #06fbff;
-}
-
-.convert-button {
-    padding: 10px 20px;
-    background:linear-gradient(65deg, rgba(116, 44, 210, 0.863),rgba(31, 115, 232, 0.878));
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.convert-button:hover {
-    background:linear-gradient(65deg, rgba(31, 115, 232, 0.878), rgba(116, 44, 210, 0.863));
-}
-
-.download-link {
-    display: block;
-    margin-top: 20px;
-    color: #007bff;
-    text-decoration: none;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.download-link.active {
-    opacity: 1;
-}
-
-.loading-message {
-    color: #007bff;
-    font-weight: bold;
-    display: none;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.loading-message.active {
-    display: block;
-    opacity: 1;
-}
 .float{
 	position:fixed;
     width:55px;
@@ -621,60 +546,12 @@ body {
               </div>
             </nav>
           </div>
-          <div id="backg">
-          <div class="container">
-            <h1 class="title">Word to PDF Converter</h1>
-            <input type="file" id="fileInput" accept=".doc,.docx" class="file-input" />
-            <button id="convertButton" class="convert-button">Convert to PDF</button>
-            <a id="downloadLink" href="#" download="converted.pdf" style="display: none;" class="download-link">Download PDF</a>
-            <div id="loadingMessage" style="display: none;" class="loading-message">Converting...</div>
-        </div>
-    </div>
+          
     <link rel="stylesheet" >
     <a href="chatbot.html" class="float" target="_blank">
     <i class="fa fa-comments chatgpt-icon"></i>
     </a>
-        <script>
-            const apiKey = 'YOUR_API_KEY_HERE';
-            const apiUrl = 'https://api.example.com/convert';
-    
-            document.getElementById('convertButton').addEventListener('click', async () => {
-                const fileInput = document.getElementById('fileInput');
-                const file = fileInput.files[0];
-    
-                if (!file) {
-                    alert('Please select a file.');
-                    return;
-                }
-    
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('apiKey', apiKey);
-    
-                document.getElementById('loadingMessage').style.display = 'block';
-    
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        body: formData
-                    });
-    
-                    if (!response.ok) {
-                        throw new Error('Conversion failed.');
-                    }
-    
-                    const blob = await response.blob();
-                    const url = URL.createObjectURL(blob);
-    
-                    document.getElementById('downloadLink').href = url;
-                    document.getElementById('downloadLink').style.display = 'block';
-                    document.getElementById('loadingMessage').style.display = 'none';
-                } catch (error) {
-                    alert('Conversion failed. Please try again.');
-                    document.getElementById('loadingMessage').style.display = 'none';
-                }
-            });
-            </script>
-            </body>
-            </html>
+    <iframe src="http://127.0.0.1:5002" width="100%" height="700px"></iframe>
+</body>
+</html>
     

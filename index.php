@@ -177,7 +177,7 @@ z-index: 10;
 /* header */
 .header{
     margin: auto;
-   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(img/white\ banner.jpg) center/cover no-repeat;
+   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(img/whitebanner.jpg) center/cover no-repeat;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -896,7 +896,43 @@ ul li a:hover{
 
 }
   /* floating icon module completed */
+.welcome{
+    
+    position: absolute; 
+    top: 10px;
+    right: 70px;
+    width: 70px;
+    text-align: right;
+    vertical-align: top;
+    background-color: transparent;
+    font-weight: 600;
+    font-size: 15px;
+    color: #3e0489d8;
 
+}
+/*signup page button color*/
+.highlight {
+    top: 5px;
+    background-color: rgba(91, 255, 211, 0.911); /* Change this to the desired color */
+
+    border-radius: 50px;
+    }
+    .highlight:hover {
+    top: 5px;
+    background-color: rgb(24, 255, 147); /* Change this to the desired color */
+    border-radius: 50px;
+    }
+    .highlightt {
+    top: 5px;
+    background-color: rgba(255, 205, 130, 0.911); /* Change this to the desired color */
+
+    border-radius: 50px;
+    }
+    .highlightt:hover {
+    top: 5px;
+    background-color: rgb(255, 113, 24); /* Change this to the desired color */
+    border-radius: 50px;
+    }
 </style>  
 </head>
   <body>
@@ -1022,19 +1058,27 @@ ul li a:hover{
             <li><br></li>
 
             <li>
-            <a href = "register.php">Sign up</a>
+            <a class="highlight" href = "register.php">Sign up</a>
             </li>
             <li>
-            <a href = "Logout.php">Logout</a>
+            <a  class="highlightt" href = "Logout.php">Logout</a>
+            </li>
+            <li>
+            <div class="welcome">
+   
+   <!-- User profile -->
+       <h4 class="my-4">Hello, <?= htmlspecialchars($_SESSION["username"]); ?></h4>
+ </div>
             </li>
           </ul>
+         
+
         </div>
       </nav>
     </div>
-
+   
     <section class = "header">
         <br>
-      <br>
       <h2>Convert > Create > Collaborate</h2>
       <p>Welcome to BotHub! Simplifying document transformation for you. Convert, edit, create with ease. Say goodbye to complexity, hello to efficiency. Explore our API for seamless integration. Join us and empower your documents effortlessly. Contact us to access the BotHub API today!</p>
       <button type = "button"><a href="chatbot.html" >Use Bot</a></button>
@@ -1043,6 +1087,7 @@ ul li a:hover{
     <div class="container">
         <br>
         <br>
+     
   <section>
       <div class="box-container">
   
