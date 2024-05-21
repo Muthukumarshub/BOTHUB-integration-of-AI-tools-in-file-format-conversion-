@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>PPT-to-PDF</title>
+    <title>PPT-to-PDF Converter</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
     <!-- Font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 * {
     box-sizing: border-box;
@@ -20,18 +20,13 @@
 }
 
 body {
-    background: linear-gradient(65deg, rgb(128, 128, 241), rgb(52, 162, 230));
-}
-body {
-    background:linear-gradient(65deg, rgba(159, 223, 243, 0.842), rgba(255, 255, 255, 0.707),  rgba(242, 173, 173, 0.799));
-    background-repeat: no-repeat;
-    transition: background 0.3s ease-in-out;
+    background: linear-gradient(65deg,rgb(128, 128, 241),rgb(52, 162, 230));
 }
 
 .container {
     width: 90%;
     max-width: 400px;
-    height: 600px;
+    height: 600px; /* Adjust height as needed */
     background: linear-gradient(45deg, rgba(183, 204, 255, 0.759), rgba(228, 205, 255, 0.627));
     padding: 20px;
     border-radius: 10px;
@@ -126,26 +121,10 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-.drop-area {
-    border: 2px dashed #007bff;
-            border-radius: 5px;
-            margin-top: 40px;
-            padding: 60px;
-            text-align: center;
-            color: #007bff;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-            margin-bottom: 20px;
-}
-
-.drop-area.active {
-    border-color: #007bff;
-}
-
 .download-link {
     width: 170px;
     display: inline-block;
-    padding: 14px 20px ;
+    padding: 14px 20px;
     margin: 38px 100px 0px; /* Increased top margin */
     border: none;
     border-radius: 4px;
@@ -167,18 +146,35 @@ body {
     transform: scale(1.5);
 }
 
-</style>
+.drop-zone {
+    border: 2px dashed #007bff;
+    border-radius: 5px;
+    margin-top: 40px;
+    padding: 60px;
+    text-align: center;
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 20px;
+}
+
+.drop-zone.dragover {
+    background-color: #007bff;
+    color: white;
+}
+
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="title">PPT to PDF Converter</h1>
-        <div class="drop-area" id="dropArea">
-            <span>Drop PPT file here or click to upload</span>
-        </div>
         <form id="uploadForm" action="/convert" method="post" enctype="multipart/form-data">
+            <div class="drop-zone" id="dropZone">
+                Drag & Drop your file here
+            </div>
             <div class="file-input-container">
                 <label for="fileInput" class="file-input-label">Choose File</label>
-                <input type="file" name="file" accept=".ppt, .pptx" class="file-input form-control" id="fileInput">
+                <input type="file" name="file" accept=".ppt,.pptx" class="file-input form-control" id="fileInput">
             </div>
             <div class="file-name" id="fileName"></div>
             <button type="submit" class="convert-button">Convert to PDF</button>
@@ -191,80 +187,66 @@ body {
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var dropArea = document.getElementById('dropArea');
-            var fileInput = document.getElementById('fileInput');
-            var fileToUpload = null;
+$(document).ready(function() {
+    $('#uploadForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $('.loading-message').show();
+        $('#resultContainer').html('');
 
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false)
-            });
-
-            function preventDefaults (e) {
-                e.preventDefault()
-                e.stopPropagation()
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false)
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false)
-            });
-
-            function highlight(e) {
-                dropArea.classList.add('active');
-            }
-
-            function unhighlight(e) {
-                dropArea.classList.remove('active');
-            }
-
-            dropArea.addEventListener('drop', handleDrop, false);
-
-            function handleDrop(e) {
-                var dt = e.dataTransfer;
-                var files = dt.files;
-
-                fileToUpload = files[0];
-                if (fileToUpload) {
-                    $('#fileInput').prop('files', files);
-                }
-            }
-
-            fileInput.addEventListener('change', function() {
-                fileToUpload = this.files[0];
-            });
-
-            $('#uploadForm').on('submit', function(e) {
-                e.preventDefault();
-                if (fileToUpload) {
-                    uploadFile(fileToUpload);
+        $.ajax({
+            url: '/convert',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('.loading-message').hide();
+                if (response.error) {
+                    $('#resultContainer').html('<p style="color: red;">' + response.error + '</p>');
                 } else {
-                    alert('Please select a PPT file');
+                    var downloadLink = '<a class="download-link" href="' + response.download_link + '">Download PPT</a>';
+                    $('#resultContainer').html(downloadLink);
                 }
-            });
-
-            function uploadFile(file) {
-                $('.loading-message').show();
-                $('#resultContainer').empty();
-                var formData = new FormData();
-                formData.append('file', file);
-                $.ajax({
-                    url: '/convert',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $('.loading-message').hide();
-                        var downloadLink = '<a href="' + response.download_link + '" class="btn btn-success download-link">Download PDF</a>';
-                        $('#resultContainer').html(downloadLink);
-                    }
-                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('.loading-message').hide();
+                $('#resultContainer').html('<p style="color: red;">' + textStatus + '</p>');
             }
         });
+    });
+
+    $('#fileInput').on('change', function() {
+        var fileName = $(this).val().split('\\').pop();
+        $('#fileName').html(fileName);
+    });
+
+    var dropZone = $('#dropZone');
+
+    dropZone.on('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.addClass('dragover');
+    });
+
+    dropZone.on('dragleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.removeClass('dragover');
+    });
+
+    dropZone.on('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.removeClass('dragover');
+        var files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+            $('#fileInput')[0].files = files;
+            var fileName = files[0].name;
+            $('#fileName').html(fileName);
+        }
+    });
+});
     </script>
 </body>
 </html>

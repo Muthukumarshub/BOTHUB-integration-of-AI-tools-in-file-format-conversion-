@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PDF to PDF/A Converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background: linear-gradient(65deg, rgb(128, 128, 241), rgb(52, 162, 230));
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            height: 600px;
+            background: linear-gradient(45deg, rgba(183, 204, 255, 0.759), rgba(228, 205, 255, 0.627));
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: #052481e7;
+            text-shadow: 5px 3px 5px hsla(245, 100%, 65%, 0.348);
+        }
+        .file-input-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .file-input-label {
+            display: block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .file-input-label:hover {
+            background-color: #0056b3;
+        }
+        .file-input-label:active {
+            transform: scale(0.95);
+        }
+        .file-name {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .convert-button {
+            width: 100%;
+            background: linear-gradient(65deg, rgb(255, 184, 244), rgb(151, 231, 255));
+            color: rgb(0, 0, 0);
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .convert-button:hover {
+            background: linear-gradient(65deg, rgb(151, 231, 255), rgb(255, 184, 244));
+            transform: scale(1.02);
+        }
+        .convert-button:active {
+            transform: scale(0.95);
+        }
+        .loading-message {
+            display: none;
+            text-align: center;
+            font-size: 1.5em;
+            color: #007bff;
+        }
+        .loading-spinner {
+            display: block;
+            margin: 20px auto;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007bff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .download-link {
+            width: 170px;
+            display: inline-block;
+            padding: 14px 20px;
+            margin: 38px 100px 0px; /* Increased top margin */
+            border: none;
+            border-radius: 4px;
+            background: linear-gradient(65deg, rgb(37, 37, 255), rgb(210, 119, 255));
+            color: rgb(255, 255, 255);
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .download-link:hover {
+            background: linear-gradient(65deg, rgb(210, 119, 255), rgb(37, 37, 255));
+            transform: scale(1.07);
+        }
+        .download-link:active {
+            transform: scale(1.5);
+        }
+        .drop-zone {
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+            margin-top: 40px;
+            padding: 60px;
+            text-align: center;
+            color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-bottom: 20px;
+        }
+        .drop-zone.dragover {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">PDF to PDF/A Converter</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="file-input-container">
+                <label for="fileInput" class="file-input-label">Choose PDF File</label>
+                <input type="file" name="file" accept=".pdf" class="file-input form-control" id="fileInput">
+            </div>
+            <div class="file-name" id="fileName"></div>
+            <button type="button" class="convert-button" onclick="convertToPDFA()">Convert to PDF/A</button>
+        </form>
+        <div class="loading-message" id="loadingMessage">
+            Converting...
+        </div>
+        <div id="resultContainer"></div>
+    </div>
+    <script>
+        function convertToPDFA() {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+    if (!file) {
+        alert('Please select a file.');
+        return;
+    }
+
+    var formData = new FormData();
+    formData.append('file', file);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/convert', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.error) {
+                alert('Error: ' + response.error);
+            } else {
+                var downloadLink = document.createElement('a');
+                downloadLink.href = response.download_link;
+                downloadLink.textContent = 'Download PDF/A';
+                downloadLink.className = 'download-link';
+                document.getElementById('resultContainer').appendChild(downloadLink);
+            }
+            document.getElementById('loadingMessage').style.display = 'none';
+        }
+    };
+    xhr.send(formData);
+
+    document.getElementById('loadingMessage').style.display = 'block';
+}
+
+document.getElementById('fileInput').addEventListener('change', function () {
+    var fileName = this.value.split('\\').pop();
+    document.getElementById('fileName').textContent = fileName;
+});
+
+    </script>
+</body>
+</html>

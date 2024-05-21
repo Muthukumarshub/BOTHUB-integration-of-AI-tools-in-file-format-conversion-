@@ -951,7 +951,7 @@ ul li a:hover{
               <a href = "chatbot.html">Chatbot</a>
             </li>
             <li>
-              <a href = "https://bothuubs.streamlit.app/">chatpdf</a>
+              <a href = "chatpdf.html">chatpdf</a>
             </li>
             <li>
               <a href = "#" class = "menu-link">
